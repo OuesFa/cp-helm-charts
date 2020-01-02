@@ -55,6 +55,7 @@ spec:
           volumeMounts:
           - name: jmx-config
             mountPath: /etc/jmx-kafka-connect
+{{ toYaml .Values.volumeMounts | indent 12 }}
         {{- end }}
         - name: {{ template "cp-kafka-connect.name" . }}-server
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
@@ -111,6 +112,9 @@ spec:
       - name: jmx-config
         configMap:
           name: {{ template "cp-kafka-connect.fullname" . }}-jmx-configmap
+    {{- with .Values.volumes }}
+  {{ toYaml . | indent 8 }}
+    {{- end }}
       {{- end }}
       {{- if .Values.nodeSelector }}
       nodeSelector:
